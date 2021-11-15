@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block page_content %}
+  <h1 style="margin-top: 5">{{ category | title }}</h1>
+  <hr>
+  {% for post in posts %}
+    <div class="container">
+      <h2><a href="{% url 'blog_detail' post.pk %}">{{ post.title | title }}</a></h2>
+      <small>
+        Written:&nbsp;
+        {{ post.created_on.date }} |&nbsp;
+        {% for cat in post.categories.all %}
+          <a href="{% url 'blog_category' cat.name %}">{{ cat.name | title }}</a>&nbsp;
+        {% endfor %}
+      </small>
+      <p>
+        {{ post.body | slice:":400" }}...
+      </p>
+    </div>
+  {% endfor %}
+{% endblock %}

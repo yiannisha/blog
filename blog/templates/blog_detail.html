@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block page_content %}
+  <h1 style="margin-top: 5">{{ post.title | title }}</h1>
+  <small>
+    Written:&nbsp;
+    {{ post.created_on.date }} |&nbsp;
+    {% for cat in post.categories.all %}
+      <a href="{% url 'blog_category' cat.name %}">{{ cat.name | title }}</a>&nbsp;
+    {% endfor %}
+  </small>
+  <hr>
+  <p>
+    {{ post.body | linebreaks }}
+  </p>
+  <h3>Leave a Comment:</h3>
+  <form action="/blog/{{ post.pk }}/" method="post">
+    {% csrf_token %}
+    <div class="form-group" style="margin-bottom: 0">
+      {{ form.author }}
+    </div>
+    <div class="form-group" style="margin-bottom: 0">
+      {{ form.body }}
+    </div>
+    <button type="submit" class="btn btn-dark">Submit</button>
+  </form>
+  <h3>Comments</h3>
+  <hr>
+  {% for comment in comments %}
+  <p>
+    <i>"{{ comment.body }}"</i>
+    <br>
+    - <b>{{ comment.author }}</b> on {{ comment.created_on }}
+  </p>
+  {% endfor %}
+  <script>
+    if ( window.history.replaceState ) {
+      window.history.replaceState( null, null, window.location.href );
+    }
+  </script>
+{% endblock %}
